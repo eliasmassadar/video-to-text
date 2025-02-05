@@ -12,7 +12,7 @@ def format_time(seconds):
     secs = int(seconds % 60)
     return f"{hours:02}:{minutes:02}:{secs:02}"
 
-def main():
+def process_videos():
     model = whisper.load_model("base")
     videos_path = "videos"
     results_path = "result"
@@ -22,8 +22,7 @@ def main():
     total_files = len(files)
     for index, file_name in enumerate(files, start=1):
         video_file = os.path.join(videos_path, file_name)
-        percentage = (index / total_files) * 100
-        print(f"Processing video {index}/{total_files} ({percentage:.2f}%) - {file_name}")
+        print(f"Processing video {index}/{total_files} - {file_name}")
         result = model.transcribe(video_file)
         base_name = os.path.splitext(file_name)[0]
         txt_file = os.path.join(results_path, base_name + ".txt")
@@ -42,6 +41,21 @@ def main():
                 else:
                     f.write(f"[{format_time(start)} - {format_time(end)}] {segment_text}\n")
         print(f"Transcription saved to: {txt_file}")
+
+def search_keyword_in_txt(keyword, directory, output_file):
+    with open(output_file, "w", encoding="utf-8") as out:
+        for file_name in os.listdir(directory):
+            if file_name.lower().endswith(".txt"):
+                file_path = os.path.join(directory, file_name)
+                with open(file_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        if keyword in line:
+                            out.write(f"{file_name}: {line}")
+
+def main():
+    # process_videos()
+    search_keyword_in_txt("Paulistão", "result", "result/paulistao_results.txt")
+    print("Keyword search complete. Results saved to: paulistao_results.txt")
 
 if __name__ == "__main__":
     main()
