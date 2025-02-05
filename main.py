@@ -1,6 +1,10 @@
 import os
 import re
 import whisper
+import ssl
+
+# Desativar verificação de SSL temporariamente
+ssl._create_default_https_context = ssl._create_unverified_context
 
 def split_into_sentences(text):
     sentences = re.split(r'(?<=[.!?])\s+', text)
@@ -53,7 +57,7 @@ def search_keyword_in_txt(keyword, directory, output_file):
                             out.write(f"{file_name}: {line}")
 
 def main():
-    # process_videos()
+    process_videos()
     search_keyword_in_txt("Paulistão", "result", "result/paulistao_results.txt")
     print("Keyword search complete. Results saved to: paulistao_results.txt")
 
