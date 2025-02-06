@@ -6,8 +6,6 @@ import ssl
 # Desativar verificação de SSL temporariamente
 ssl._create_default_https_context = ssl._create_unverified_context
 
-FFMPEG_FOLDER = r"\\\\10.10.50.29\\share\\PROGRAMA AD BREAKS E VINHETAS\\ffmpeg\\bin"
-os.environ["PATH"] = FFMPEG_FOLDER + os.pathsep + os.environ["PATH"]
 
 def split_into_sentences(text):
     sentences = re.split(r'(?<=[.!?])\s+', text)
